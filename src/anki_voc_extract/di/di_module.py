@@ -1,6 +1,6 @@
 from injector import Binder, Module
 
-from anki_voc_extract.client.anki_client import AnkiClient
+from anki_voc_extract.clients import AnkiClient
 from anki_voc_extract.config import Config
 
 

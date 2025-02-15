@@ -31,6 +31,8 @@ isort = "uv run ruff check src tests *.py --select I --fix-only"
 x = ["lint", "format", "isort"]
 
 [tool.ruff]
+exclude = ["notebooks/*"]
+
 lint.ignore = [
     "A003", # Class attribute `id` is shadowing a Python builtin
     "D100", # Missing docstring in public module
