@@ -1,17 +1,17 @@
 from injector import Binder, Module
 
 from anki_voc_extract.clients import AnkiClient
-from anki_voc_extract.config import Config
+from anki_voc_extract.configs import AnkiClientConfig
 
 
-class ConfigModule(Module):
+class AnkiClientConfigModule(Module):
     def configure(self, binder: Binder) -> None:
-        """Define the DI of Config module. Binding Config class to itself.
+        """Define the DI of AnkiCLientConfig module. Binding Config class to itself.
 
         Args:
             binder (_type_): _description_
         """
-        binder.bind(Config, to=Config, scope=None)
+        binder.bind(AnkiClientConfig, to=AnkiClientConfig, scope=None)
 
 
 class AnkiClientModule(Module):
