@@ -15,9 +15,26 @@ class AnkiClient:
         Returns:
             str: API url for AnkiConnector.
         """
-        return self.config.api_url
+        return self.config.ankiconnector_url
 
-    def get_cards(self):
-        payload = {"action": "notesInfo", "version": 6, "params": {"query": "deck:korean"}}
+    def get_note_ids(self) -> list:
+        """Get all the flash cards stored in the specified deck.
 
-        return requests.post(self.config.api_url, json=payload, timeout=self.config.timeout)
+        Returns:
+            list: _description_
+        """
+        payload = {
+            "action": "findNotes",
+            "version": 6,
+            "params": {"query": f"deck:{self.config.deck_name}"},
+        }
+
+        return (
+            requests.post(
+                self.config.ankiconnector_url,
+                json=payload,
+                timeout=self.config.timeout,
+            )
+            .json()
+            .get("result")
+        )

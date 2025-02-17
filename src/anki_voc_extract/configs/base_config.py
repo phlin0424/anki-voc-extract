@@ -11,7 +11,9 @@ class BaseConfig(BaseSettings):
         BaseSettings (_type_): _description_
     """
 
-    api_url: str = Field(
+    ankiconnector_url: str = Field(
         default=API_URL,
         description="The url for AnkiConnector API",
     )
+
+    deck_name: str = Field(default="korean", description="Target anki deck")
