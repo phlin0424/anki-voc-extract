@@ -1,7 +1,7 @@
 from injector import Binder, Module
 
 from anki_voc_extract.clients import AnkiClient
-from anki_voc_extract.configs import AnkiClientConfig
+from anki_voc_extract.configs import AnkiClientConfig, AnkiTextCleanerConfig
 
 
 class AnkiClientConfigModule(Module):
@@ -12,6 +12,16 @@ class AnkiClientConfigModule(Module):
             binder (_type_): _description_
         """
         binder.bind(AnkiClientConfig, to=AnkiClientConfig, scope=None)
+
+
+class AnkiTextCleanerConfigModule(Module):
+    def configure(self, binder: Binder) -> None:
+        """Define the DI of AnkiCLientConfig module. Binding Config class to itself.
+
+        Args:
+            binder (_type_): _description_
+        """
+        binder.bind(AnkiTextCleanerConfig, to=AnkiTextCleanerConfig, scope=None)
 
 
 class AnkiClientModule(Module):

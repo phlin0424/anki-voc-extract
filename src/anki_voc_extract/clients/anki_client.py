@@ -65,8 +65,7 @@ class AnkiClient:
                 # Raise error when something goes wrong
                 raise ValueError(f"Error: {result['error']}")
 
-            note_info = result["result"][0]  # Since we asked for a single note ID, access the first element
-            # Retrieve and print the note fields (e.g., Front and Back)
+            note_info = result["result"][0]
             return note_info["fields"]
 
         raise ValueError("Anki connector error")
