@@ -2,6 +2,7 @@ import requests
 from injector import inject
 
 from anki_voc_extract.configs import AnkiClientConfig
+from anki_voc_extract.models import AnkiKoreanCardModel
 
 
 class AnkiClient:
@@ -17,7 +18,7 @@ class AnkiClient:
         """
         return self.config.ankiconnector_url
 
-    def get_note_ids(self) -> None | list:
+    def get_note_ids(self) -> None | list[int]:
         """Get all the flash cards stored in the specified deck.
 
         Returns:
@@ -39,19 +40,18 @@ class AnkiClient:
             .get("result")
         )
 
-    # Function to retrieve content of a note by its note_id
-    def get_note_content(self, note_id: int) -> None | list:
+    def get_note_content(self, note_id: list[int]) -> None | list[AnkiKoreanCardModel]:
         """Get a note content according a given note id.
 
         Args:
-            note_id (int): the anki note id.
+            note_id (list[int]): the anki note id.
         """
         # Prepare the payload to fetch the note details
         payload = {
             "action": "notesInfo",  # Action to get note information
             "version": 6,  # Version of the AnkiConnect API
             "params": {
-                "notes": [note_id]  # Provide a list of note IDs (even if it's just one)
+                "notes": note_id  # Provide a list of note IDs (even if it's just one)
             },
         }
 
@@ -60,12 +60,24 @@ class AnkiClient:
 
         # Check if the response is successful
         if response.status_code == 200:
-            result = response.json()
-            if result.get("error") is not None:
-                # Raise error when something goes wrong
-                raise ValueError(f"Error: {result['error']}")
+            # Fetch the requested results
+            response_json = response.json()
 
-            note_info = result["result"][0]
-            return note_info["fields"]
+            # Raise error when something goes wrong
+            if response_json.get("error") is not None:
+                raise ValueError(f"Error: {response_json['error']}")
+
+            # Fetch the results field from the response
+            results = response_json.get("result")
+
+            # Compose the return values
+            return [
+                AnkiKoreanCardModel(
+                    front=result.get("fields").get("裏面").get("value"),
+                    back=result.get("fields").get("例文").get("value"),
+                    note_id=result.get("noteId"),
+                )
+                for result in results
+            ]
 
         raise ValueError("Anki connector error")
