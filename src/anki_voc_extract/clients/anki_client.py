@@ -73,8 +73,8 @@ class AnkiClient:
             # Compose the return values
             return [
                 AnkiKoreanCardModel(
-                    front=result.get("fields").get("裏面").get("value"),
-                    back=result.get("fields").get("例文").get("value"),
+                    front=result.get("fields").get("表面").get("value"),
+                    back=result.get("fields").get("裏面").get("value"),
                     note_id=result.get("noteId"),
                 )
                 for result in results
