@@ -1,25 +1,34 @@
 import re
 
 from bs4 import BeautifulSoup
+from injector import inject
 
 from anki_voc_extract.configs import AnkiTextCleanerConfig
 
 
 class AnkiTextCleaner:
+    @inject
     def __init__(self, config: AnkiTextCleanerConfig) -> None:
         self.config = config
 
-    def clean(self) -> str:
-        """Return a clean text w/o additional symbols.
+    def clean(self, input_text: str) -> str:
+        """CLean the text.
+
+        Args:
+            input_text (str): _description_
 
         Returns:
-            str: Clean text
+            str: _description_
         """
-        input_text = self.config.text
-        input_text = self.__remove(input_text)
-        return self.__remove_html_tags(input_text)
+        if self.config.rm_mp3_path_flg:
+            input_text = self.__remove_mp3_path(input_text)
 
-    def __remove(self, text: str) -> str:
+        if self.config.rm_html_path_flg:
+            input_text = self.__remove_html_tags(input_text)
+
+        return input_text
+
+    def __remove_mp3_path(self, text: str) -> str:
         """Rephrase the front text in anki note. remove the [] symbols.
 
         Args:
