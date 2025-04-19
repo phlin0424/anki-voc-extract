@@ -14,14 +14,10 @@ class BaseConfig(BaseSettings):
     Provides common settings and functionality for all configuration classes.
     """
 
-    gemini_api_key: str | None = Field(
-        default=None,
-        description="Gemini API key for the Gemini API.",
-    )
-    ankiconnector_url: str = Field(
-        default=API_URL,
-        description="The url for AnkiConnector API",
-    )
+    # gemini_api_key: str | None = Field(
+    #     default=None,
+    #     description="Gemini API key for the Gemini API.",
+    # )
     model_config = ConfigDict(protected_namespaces=("settings_",))  # type: ignore
 
     # Class variable to store instances for the singleton pattern
@@ -36,6 +32,10 @@ class BaseConfig(BaseSettings):
 
 
 class AnkiClientConfig(BaseConfig):
+    ankiconnector_url: str = Field(
+        default=API_URL,
+        description="The url for AnkiConnector API",
+    )
     timeout: int = Field(default=30, description="Timeout for AnkiClient API calls")
     deck_name: str = Field(default="korean", description="Target anki deck")
 
