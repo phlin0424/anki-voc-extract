@@ -1,4 +1,4 @@
-from injector import Binder, Module, provider, singleton
+from injector import Module, provider, singleton
 
 from anki_voc_extract.clients import AnkiClient
 from anki_voc_extract.configs import AnkiClientConfig, AnkiTextCleanerConfig, ConfigFactory, OutputterConfig

@@ -1,6 +1,6 @@
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, Type, TypeVar
+from typing import ClassVar, TypeVar
 
 from pydantic import ConfigDict, Field
 from pydantic_settings import BaseSettings
@@ -21,7 +21,7 @@ class BaseConfig(BaseSettings):
     model_config = ConfigDict(protected_namespaces=("settings_",))  # type: ignore
 
     # Class variable to store instances for the singleton pattern
-    _instances: ClassVar[dict[Type["BaseConfig"], "BaseConfig"]] = {}
+    _instances: ClassVar[dict[type["BaseConfig"], "BaseConfig"]] = {}
 
     @classmethod
     def get_instance(cls) -> "BaseConfig":
@@ -54,7 +54,7 @@ class AnkiTextCleanerConfig(BaseConfig):
 
 
 class OutputterConfig(BaseConfig):
-    output_path: Path = Field(default=Path("."), description="File path for the output file.")
+    output_path: Path = Field(default=Path(), description="File path for the output file.")
 
 
 T = TypeVar("T", bound=BaseConfig)
@@ -64,7 +64,7 @@ class ConfigFactory(BaseSettings):
     """Factory for creating and caching config instances."""
 
     @classmethod
-    def get_config(cls, config_class: Type[T]) -> T:
+    def get_config(cls, config_class: type[T]) -> T:
         """Get the config instance.
 
         Returns:
