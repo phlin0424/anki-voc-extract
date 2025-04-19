@@ -1,34 +1,55 @@
-from injector import Binder, Module
+from injector import Binder, Module, provider, singleton
 
 from anki_voc_extract.clients import AnkiClient
-from anki_voc_extract.configs import AnkiClientConfig, AnkiTextCleanerConfig
+from anki_voc_extract.configs import AnkiClientConfig, AnkiTextCleanerConfig, ConfigFactory, OutputterConfig
 
 
-class AnkiClientConfigModule(Module):
-    def configure(self, binder: Binder) -> None:
-        """Define the DI of AnkiCLientConfig module. Binding Config class to itself.
+class ConfigModule(Module):
+    """Module for providing all configuration dependencies."""
+
+    @singleton
+    @provider
+    def provide_anki_client_config(self) -> AnkiClientConfig:
+        """Provide the AnkiClientConfig instance.
+
+        Returns:
+            AnkiClientConfig: Singleton instance from factory
+        """
+        return ConfigFactory.get_anki_client_config()
+
+    @singleton
+    @provider
+    def provide_anki_text_cleaner_config(self) -> AnkiTextCleanerConfig:
+        """Provide the AnkiTextCleanerConfig instance.
+
+        Returns:
+            AnkiTextCleanerConfig: Singleton instance from factory
+        """
+        return ConfigFactory.get_anki_text_cleaner_config()
+
+    @singleton
+    @provider
+    def provide_outputter_config(self) -> OutputterConfig:
+        """Provide the OutputterConfig instance.
+
+        Returns:
+            OutputterConfig: Singleton instance from factory
+        """
+        return ConfigFactory.get_outputter_config()
+
+
+class ClientModule(Module):
+    """Module for providing all client dependencies."""
+
+    @singleton
+    @provider
+    def provide_anki_client(self, config: AnkiClientConfig) -> AnkiClient:
+        """Provide the AnkiClient instance with injected config.
 
         Args:
-            binder (_type_): _description_
+            config: The AnkiClient configuration
+
+        Returns:
+            AnkiClient: Singleton AnkiClient instance
         """
-        binder.bind(AnkiClientConfig, to=AnkiClientConfig, scope=None)
-
-
-class AnkiTextCleanerConfigModule(Module):
-    def configure(self, binder: Binder) -> None:
-        """Define the DI of AnkiCLientConfig module. Binding Config class to itself.
-
-        Args:
-            binder (_type_): _description_
-        """
-        binder.bind(AnkiTextCleanerConfig, to=AnkiTextCleanerConfig, scope=None)
-
-
-class AnkiClientModule(Module):
-    def configure(self, binder: Binder) -> None:
-        """Define the DI module. Binding AnkiClient class to itself.
-
-        Args:
-            binder (Binder): _description_
-        """
-        binder.bind(AnkiClient, to=AnkiClient, scope=None)
+        return AnkiClient(config)

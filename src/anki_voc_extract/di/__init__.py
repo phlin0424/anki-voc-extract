@@ -1,5 +1,5 @@
 from injector import Injector
 
-from anki_voc_extract.di.di_module import AnkiClientConfigModule, AnkiClientModule
+from anki_voc_extract.di.di_module import ConfigModule
 
-injector = Injector([AnkiClientConfigModule(), AnkiClientModule()])
+injector = Injector([ConfigModule()])
