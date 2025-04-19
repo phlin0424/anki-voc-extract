@@ -18,7 +18,7 @@ class AnkiClient:
         """
         return self.config.ankiconnector_url
 
-    def get_note_ids(self) -> None | list[int]:
+    def get_note_ids(self) -> list[int]:
         """Get all the flash cards stored in the specified deck.
 
         Returns:
@@ -40,7 +40,7 @@ class AnkiClient:
             .get("result")
         )
 
-    def get_note_contents(self, note_id: list[int]) -> None | list[AnkiKoreanCardModel]:
+    def get_note_contents(self, note_id: list[int]) -> list[AnkiKoreanCardModel]:
         """Get a note content according a given note id.
 
         Args:

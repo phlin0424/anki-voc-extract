@@ -19,7 +19,7 @@ class Outputter:
         self.client = anki_client
         self.text_cleaner = text_cleaner
 
-    def output(self) -> None:
+    def output_text(self) -> None:
         """Output all the anki cards stored in Anki."""
         all_ids = self.client.get_note_ids()
         all_cards = self.client.get_note_contents(all_ids)
