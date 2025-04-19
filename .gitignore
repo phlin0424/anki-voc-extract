@@ -88,3 +88,6 @@ target/
 
 # Notebook for test
 test.ipynb
+
+
+test_data/

@@ -40,7 +40,7 @@ class AnkiClient:
             .get("result")
         )
 
-    def get_note_content(self, note_id: list[int]) -> None | list[AnkiKoreanCardModel]:
+    def get_note_contents(self, note_id: list[int]) -> None | list[AnkiKoreanCardModel]:
         """Get a note content according a given note id.
 
         Args:
