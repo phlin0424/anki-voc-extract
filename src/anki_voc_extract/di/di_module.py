@@ -1,7 +1,13 @@
 from injector import Module, provider, singleton
 
 from anki_voc_extract.clients import AnkiClient
-from anki_voc_extract.configs import AnkiClientConfig, AnkiTextCleanerConfig, ConfigFactory, OutputterConfig
+from anki_voc_extract.configs import (
+    AnkiClientConfig,
+    AnkiTextCleanerConfig,
+    ConfigFactory,
+    OutputterConfig,
+    AIAgentConfig,
+)
 
 
 class ConfigModule(Module):
@@ -36,6 +42,16 @@ class ConfigModule(Module):
             OutputterConfig: Singleton instance from factory
         """
         return ConfigFactory.get_outputter_config()
+
+    @singleton
+    @provider
+    def provide_ai_agent_config(self) -> AIAgentConfig:
+        """Provide the AIAgentConfig instance.
+
+        Returns:
+            AIAgentConfig: Singleton instance from factory
+        """
+        return ConfigFactory.get_ai_agent_config()
 
 
 class ClientModule(Module):
