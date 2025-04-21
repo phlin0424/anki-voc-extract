@@ -1,6 +1,5 @@
-from fastapi_mcp import FastApiMCP
 import api
-
+from fastapi_mcp import FastApiMCP
 
 mcp = FastApiMCP(
     api.app,

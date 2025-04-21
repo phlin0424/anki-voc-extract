@@ -2,11 +2,11 @@ from injector import Module, provider, singleton
 
 from anki_voc_extract.clients import AnkiClient
 from anki_voc_extract.configs import (
+    AIAgentConfig,
     AnkiClientConfig,
     AnkiTextCleanerConfig,
     ConfigFactory,
     OutputterConfig,
-    AIAgentConfig,
 )
 
 

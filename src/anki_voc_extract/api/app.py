@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+
 from anki_voc_extract.clients import AnkiClient
 from anki_voc_extract.di import injector
-
 
 # FastAPIアプリケーションの初期化
 app = FastAPI(

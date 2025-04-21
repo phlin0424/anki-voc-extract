@@ -1,9 +1,10 @@
+import random
+
 import requests
 from injector import inject
 
 from anki_voc_extract.configs import AnkiClientConfig
 from anki_voc_extract.models import AnkiKoreanCardModel
-import random
 
 
 class AnkiClient:
