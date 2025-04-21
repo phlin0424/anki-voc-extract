@@ -1,8 +1,8 @@
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, TypeVar, Literal
+from typing import ClassVar, TypeVar
 
-from pydantic import ConfigDict, Field, BaseModel
+from pydantic import ConfigDict, Field
 from pydantic_settings import BaseSettings
 
 API_URL = "http://127.0.0.1:8765"
@@ -71,13 +71,20 @@ class AnkiTextCleanerConfig(BaseConfig):
 class AIAgentConfig(BaseConfig):
     """Configuration for AI Agent."""
 
-    provider: Literal["gemini", "openai"] = Field(default="gemini", description="AI provider to use")
     model_name: str = Field(default="gemini-pro", description="Model name to use with the provider")
     gemini_api_key: str = Field(default="", description="API key for the AI provider")
-    temperature: float = Field(default=0.7, description="Sampling temperature (higher = more creative)")
-    top_p: float = Field(default=0.9, description="Nucleus sampling parameter")
-    top_k: int = Field(default=40, description="Top-k sampling parameter")
-    max_tokens: int = Field(default=1024, description="Maximum tokens in the output")
+    gemini_model_name: str = Field(
+        default="gemini-2.0-flash-001",
+        description="Model name for Gemini API. Default is 'gemini-2.0-flash-001'.",
+    )
+    project: None | str = Field(
+        default=None,
+        description="Project ID for Gemini API. Default is 'be-lin-pei-hsuan'.",
+    )
+    location: None | str = Field(
+        default=None,
+        description="Location for Gemini API. Default is 'us-central1'.",
+    )
 
 
 # ===========================================================
