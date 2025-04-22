@@ -18,11 +18,6 @@ class BaseConfig(BaseSettings):
     Provides common settings and functionality for all configuration classes.
     """
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-    )
-
     # Class variable to store instances for the singleton pattern
     _instances: ClassVar[dict[type["BaseConfig"], "BaseConfig"]] = {}
 
@@ -87,6 +82,10 @@ class AIAgentConfig(BaseConfig):
     location: str = Field(
         default="",
         description="Location for Gemini API. Default is 'us-central1'.",
+    )
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
     )
 
 
