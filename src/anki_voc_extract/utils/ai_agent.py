@@ -44,9 +44,9 @@ class AIAgent:
         response_schema = {
             "type": "object",
             "properties": {
-                "greeting": {"type": "string"},
+                "transformed_verb": {"type": "string"},
             },
-            "required": ["greeting"],
+            "required": ["transformed_verb"],
         }
         response = self.client.models.generate_content(
             model=self.config.gemini_model_name,
