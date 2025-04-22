@@ -1,4 +1,3 @@
-from anki_voc_extract import api
 from google import genai
 from google.genai.types import GenerateContentConfig, HttpOptions
 from injector import inject
@@ -22,18 +21,26 @@ class AIAgent:
 
     def _initialize_client(self) -> None:
         """Initialize the Gemini API client."""
-        if not self.config.gemini_api_key:
-            raise ValueError("Gemini API key is required")
+        if not self.config.project or not self.config.location:
+            raise ValueError("Gemini project and location are required")
 
         self.client = genai.Client(
             vertexai=True,
             project=self.config.project,
-            api_key=self.config.gemini_api_key,
             location=self.config.location,
             http_options=HttpOptions(api_version="v1"),
         )
 
     def generate_content(self, ai_task: AITask, contents: str) -> str:
+        """Generate content using the Gemini API.
+
+        Args:
+            ai_task (AITask): _description_
+            contents (str): _description_
+
+        Returns:
+            str: _description_
+        """
         response_schema = {
             "type": "object",
             "properties": {

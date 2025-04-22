@@ -2,8 +2,8 @@ from enum import Enum
 from pathlib import Path
 from typing import ClassVar, TypeVar
 
-from pydantic import ConfigDict, Field
-from pydantic_settings import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 API_URL = "http://127.0.0.1:8765"
 
@@ -18,7 +18,10 @@ class BaseConfig(BaseSettings):
     Provides common settings and functionality for all configuration classes.
     """
 
-    model_config = ConfigDict(protected_namespaces=("settings_",))  # type: ignore
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
 
     # Class variable to store instances for the singleton pattern
     _instances: ClassVar[dict[type["BaseConfig"], "BaseConfig"]] = {}
@@ -77,12 +80,12 @@ class AIAgentConfig(BaseConfig):
         default="gemini-2.0-flash-001",
         description="Model name for Gemini API. Default is 'gemini-2.0-flash-001'.",
     )
-    project: None | str = Field(
-        default=None,
+    project: str = Field(
+        default="",
         description="Project ID for Gemini API. Default is 'be-lin-pei-hsuan'.",
     )
-    location: None | str = Field(
-        default=None,
+    location: str = Field(
+        default="",
         description="Location for Gemini API. Default is 'us-central1'.",
     )
 
