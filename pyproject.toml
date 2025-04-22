@@ -6,9 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.13.3",
+    "fastapi-mcp>=0.3.0",
+    "google-adk>=0.2.0",
+    "google-genai>=1.11.0",
     "injector>=0.22.0",
     "pydantic>=2.10.6",
     "pydantic-settings>=2.7.1",
+    "tinydb>=4.8.2",
 ]
 
 [build-system]
