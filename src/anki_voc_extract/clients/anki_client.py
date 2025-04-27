@@ -121,4 +121,6 @@ class AnkiClient:
     def get_random_verb_note_contents(self) -> AnkiKoreanCardModel:
         ids = self.get_all_note_ids()
         random.shuffle(ids)
+        if not ids:
+            raise ValueError("No notes available to retrieve.")
         return self.get_note_contents_by_ids([ids[0]])[0]

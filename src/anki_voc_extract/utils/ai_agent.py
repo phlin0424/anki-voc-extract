@@ -10,7 +10,7 @@ class AIAgent:
     """Agent for handling AI-assisted language learning tasks."""
 
     @inject
-    def __init__(self, config: AIAgentConfig):
+    def __init__(self, config: AIAgentConfig) -> None:
         """Initialize the AI Agent.
 
         Args:
