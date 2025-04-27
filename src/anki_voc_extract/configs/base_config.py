@@ -21,6 +21,13 @@ class BaseConfig(BaseSettings):
     # Class variable to store instances for the singleton pattern
     _instances: ClassVar[dict[type["BaseConfig"], "BaseConfig"]] = {}
 
+    # Environment variable settings
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
     @classmethod
     def get_instance(cls) -> "BaseConfig":
         """Get a singleton instance of this config class."""
@@ -83,10 +90,6 @@ class AIAgentConfig(BaseConfig):
         default="",
         description="Location for Gemini API. Default is 'us-central1'.",
     )
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-    )
 
 
 # ===========================================================
@@ -96,6 +99,20 @@ class AIAgentConfig(BaseConfig):
 
 class OutputterConfig(BaseConfig):
     output_path: Path = Field(default=Path(), description="File path for the output file.")
+
+
+# ===========================================================
+# Configuration classes for audio creator
+# ===========================================================
+
+
+class AudioCreatorConfig(BaseConfig):
+    mp3_path: Path = Field(default=Path(), description="File path for the mp3 file.")
+    using_lang: AvailableLang = Field(default=AvailableLang.ko, description="Language to use for the audio.")
+    namespace_uuid: str = Field(
+        default="",
+        description="Namespace UUID for generating unique audio filenames.",
+    )
 
 
 # ===========================================================
