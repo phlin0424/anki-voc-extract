@@ -2,10 +2,14 @@ from enum import Enum
 from pathlib import Path
 from typing import ClassVar, TypeVar
 
-from pydantic import ConfigDict, Field
-from pydantic_settings import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 API_URL = "http://127.0.0.1:8765"
+
+# ===========================================================
+# Base configuration class
+# ===========================================================
 
 
 class BaseConfig(BaseSettings):
@@ -14,14 +18,15 @@ class BaseConfig(BaseSettings):
     Provides common settings and functionality for all configuration classes.
     """
 
-    # gemini_api_key: str | None = Field(
-    #     default=None,
-    #     description="Gemini API key for the Gemini API.",
-    # )
-    model_config = ConfigDict(protected_namespaces=("settings_",))  # type: ignore
-
     # Class variable to store instances for the singleton pattern
     _instances: ClassVar[dict[type["BaseConfig"], "BaseConfig"]] = {}
+
+    # Environment variable settings
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     @classmethod
     def get_instance(cls) -> "BaseConfig":
@@ -31,6 +36,11 @@ class BaseConfig(BaseSettings):
         return cls._instances[cls]
 
 
+# ===========================================================
+# Configuration classes for AnkiClient
+# ===========================================================
+
+
 class AnkiClientConfig(BaseConfig):
     ankiconnector_url: str = Field(
         default=API_URL,
@@ -38,6 +48,11 @@ class AnkiClientConfig(BaseConfig):
     )
     timeout: int = Field(default=30, description="Timeout for AnkiClient API calls")
     deck_name: str = Field(default="korean", description="Target anki deck")
+
+
+# ===========================================================
+# Configuration classes for AnkiTextCleaner
+# ===========================================================
 
 
 class AvailableLang(str, Enum):
@@ -53,9 +68,56 @@ class AnkiTextCleanerConfig(BaseConfig):
     target_lang: AvailableLang = Field(default=AvailableLang.ko, description="Target language for the text cleaner.")
 
 
+# ===========================================================
+# Configuration classes for AI agent
+# ===========================================================
+
+
+class AIAgentConfig(BaseConfig):
+    """Configuration for AI Agent."""
+
+    model_name: str = Field(default="gemini-pro", description="Model name to use with the provider")
+    gemini_api_key: str = Field(default="", description="API key for the AI provider")
+    gemini_model_name: str = Field(
+        default="gemini-2.0-flash-001",
+        description="Model name for Gemini API. Default is 'gemini-2.0-flash-001'.",
+    )
+    project: str = Field(
+        default="",
+        description="Project ID for Gemini API. Default is 'be-lin-pei-hsuan'.",
+    )
+    location: str = Field(
+        default="",
+        description="Location for Gemini API. Default is 'us-central1'.",
+    )
+
+
+# ===========================================================
+# Configuration classes for Outputter
+# ===========================================================
+
+
 class OutputterConfig(BaseConfig):
     output_path: Path = Field(default=Path(), description="File path for the output file.")
 
+
+# ===========================================================
+# Configuration classes for audio creator
+# ===========================================================
+
+
+class AudioCreatorConfig(BaseConfig):
+    mp3_path: Path = Field(default=Path(), description="File path for the mp3 file.")
+    using_lang: AvailableLang = Field(default=AvailableLang.ko, description="Language to use for the audio.")
+    namespace_uuid: str = Field(
+        default="",
+        description="Namespace UUID for generating unique audio filenames.",
+    )
+
+
+# ===========================================================
+# Factory for creating and caching config instances
+# ===========================================================
 
 T = TypeVar("T", bound=BaseConfig)
 
@@ -103,3 +165,12 @@ class ConfigFactory(BaseSettings):
             OutputterConfig: OutputterConfig instance.
         """
         return cls.get_config(OutputterConfig)
+
+    @classmethod
+    def get_ai_agent_config(cls) -> AIAgentConfig:
+        """Get the AIAgentConfig instance.
+
+        Returns:
+            AIAgentConfig: AIAgentConfig instance.
+        """
+        return cls.get_config(AIAgentConfig)

@@ -37,7 +37,7 @@ def test_get_note_ids(mock_post, anki_client: AnkiClient) -> None:
     mock_post.return_value = mock_response
 
     # Call the method
-    note_ids = anki_client.get_note_ids()
+    note_ids = anki_client.get_all_note_ids()
 
     # Verify the results
     assert note_ids == [123, 456, 789]
@@ -65,7 +65,7 @@ def test_get_note_contents(mock_post, anki_client: AnkiClient) -> None:
     mock_post.return_value = mock_response
 
     # Call the method
-    note_contents = anki_client.get_note_contents([123, 456])
+    note_contents = anki_client.get_all_note_contents()
 
     # Verify the results
     assert len(note_contents) == 2
@@ -95,7 +95,7 @@ def test_get_note_contents_api_error(mock_post, anki_client: AnkiClient) -> None
 
     # Call the method and check for exception
     with pytest.raises(ValueError, match="Error: Invalid note IDs"):
-        anki_client.get_note_contents([999])
+        anki_client.get_all_note_contents()
 
 
 @patch("requests.post")
@@ -108,7 +108,7 @@ def test_get_note_contents_http_error(mock_post, anki_client: AnkiClient) -> Non
 
     # Call the method and check for exception
     with pytest.raises(ValueError, match="Anki connector error"):
-        anki_client.get_note_contents([123])
+        anki_client.get_all_note_contents()
 
 
 @patch("requests.post")
@@ -119,4 +119,4 @@ def test_get_note_contents_request_exception(mock_post, anki_client: AnkiClient)
 
     # Call the method and check for exception
     with pytest.raises(requests.exceptions.ConnectionError, match="Connection refused"):
-        anki_client.get_note_contents([123])
+        anki_client.get_all_note_contents()
