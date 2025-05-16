@@ -35,11 +35,11 @@ class AIAgent:
         """Generate content using the Gemini API.
 
         Args:
-            ai_task (AITask): _description_
-            contents (str): _description_
+            ai_task (AITask): The AI task to perform.
+            contents (str): The vocabulary to process.
 
         Returns:
-            str: _description_
+            str: the generated vocabulary.
         """
         response_schema = {
             "type": "object",

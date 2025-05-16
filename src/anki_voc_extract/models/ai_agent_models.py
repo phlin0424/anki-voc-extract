@@ -5,17 +5,25 @@ from pydantic import BaseModel
 
 
 class AITask(str, Enum):
-    """Types of tasks the AI agent can perform."""
+    """Types of tasks the AI agent can perform for Korean verb transformations."""
 
-    VERB_EXTRACT = "与えられた文から原型動詞・形容詞（~다）を抽出する。ただし、~하다は除く。"
-    PRESENT_HONORIFIC = "与えたれた韓国語単語を丁寧な敬語に変換する（~습니다）"
-    PRESENT_POLITE = "与えたれた韓国語単語を丁寧な敬語に変換する（~어요）"
-    PAST_POLITE = "与えたれた韓国語単語を丁寧な敬語過去形に変換する（~었어요）"
-    PAST_HONORIFIC = "与えたれた韓国語単語を丁寧な敬語過去形に変換する（~습니다）"
-    PRESENT_HONORIFIC_FORMAL = "与えたれた韓国語単語を丁寧な敬語に変換する（~으십니다/~십니다）"
-    PRESENT_POLITE_FORMAL = "与えたれた韓国語単語を丁寧な敬語に変換する（~으세요/~세요）"
-    PAST_HONORIFIC_FORMAL = "与えたれた韓国語単語を丁寧な敬語過去形に変換する（~으셨습니다/~셨습니다）"
-    PAST_PRESENT_POLITE = "与えたれた韓国語単語を丁寧な敬語過去形に変換する（~으셨어요/~셨어요）"
+    VERB_EXTRACT = "与えられた文から原型の動詞・形容詞（〜다）を抽出してください。ただし、〜하다は除きます。"
+
+    PRESENT_HONORIFIC = "与えられた韓国語の語幹を丁寧な敬語（〜습니다）に変換してください。"
+    PRESENT_POLITE = "与えられた韓国語の語幹を丁寧な非敬語（〜어요）に変換してください。"
+
+    PAST_POLITE = "与えられた韓国語の語幹を丁寧な非敬語の過去形（〜었어요）に変換してください。"
+    PAST_HONORIFIC = "与えられた韓国語の語幹を丁寧な敬語の過去形（〜았습니다／었습니다）に変換してください。"
+
+    PRESENT_HONORIFIC_FORMAL = (
+        "与えられた韓国語の語幹をフォーマルな丁寧敬語（〜으십니다／〜십니다）に変換してください。"
+    )
+    PRESENT_POLITE_FORMAL = "与えられた韓国語の語幹をフォーマルな丁寧語（〜으세요／〜세요）に変換してください。"
+
+    PAST_HONORIFIC_FORMAL = (
+        "与えられた韓国語の語幹をフォーマルな丁寧敬語の過去形（〜으셨습니다／〜셨습니다）に変換してください。"
+    )
+    PAST_PRESENT_POLITE = "与えられた韓国語の語幹を丁寧な非敬語の尊敬過去形（〜으셨어요／〜셨어요）に変換してください。"
 
 
 class AIRequest(BaseModel):
